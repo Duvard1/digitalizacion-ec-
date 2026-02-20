@@ -1,4 +1,3 @@
-import { CreditCard, Users, Zap, ShieldCheck, FileText, Info, HeartHandshake } from 'lucide-react';
 import GlobalNav from './GlobalNav';
 import GlobalFooter from './GlobalFooter';
 import './transporte.css';
@@ -7,6 +6,42 @@ interface TransporteCasoProps {
   onGoHome: () => void;
   onOpenDashboard: () => void;
 }
+
+interface IconProps {
+  size?: number;
+  className?: string;
+}
+
+function FallbackIcon({ size = 16, className, label }: IconProps & { label: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={className}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: size,
+        height: size,
+        borderRadius: '50%',
+        border: '1px solid currentColor',
+        fontSize: Math.max(9, Math.floor(size * 0.5)),
+        fontWeight: 700,
+        lineHeight: 1,
+      }}
+    >
+      {label}
+    </span>
+  );
+}
+
+const CreditCard = (props: IconProps) => <FallbackIcon {...props} label="CC" />;
+const Users = (props: IconProps) => <FallbackIcon {...props} label="US" />;
+const Zap = (props: IconProps) => <FallbackIcon {...props} label="Z" />;
+const ShieldCheck = (props: IconProps) => <FallbackIcon {...props} label="S" />;
+const FileText = (props: IconProps) => <FallbackIcon {...props} label="F" />;
+const Info = (props: IconProps) => <FallbackIcon {...props} label="I" />;
+const HeartHandshake = (props: IconProps) => <FallbackIcon {...props} label="H" />;
 
 export function TransporteCaso({ onGoHome, onOpenDashboard }: TransporteCasoProps) {
   return (
