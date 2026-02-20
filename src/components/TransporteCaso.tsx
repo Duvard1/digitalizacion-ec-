@@ -39,8 +39,7 @@ export function TransporteCaso({ onGoHome, onOpenDashboard }: TransporteCasoProp
               <span className="section-label-v2"><Zap size={16} /> Experiencia de Viaje</span>
               <h3>Infraestructura para el Tiempo</h3>
               <p className="metric-caption-v2">
-                Validadores inteligentes reducen la espera en paradas un <strong>15 %</strong> mediante
-                accesos 100 % electrónicos, devolviendo tiempo valioso al ciudadano.
+                La implementación de validadores electrónicos elimina los cuellos de botella generados por el pago con monedas, permitiendo un flujo de pasajeros más rápido y eficiente, especialmente en horas pico.
               </p>
             </div>
 
@@ -54,22 +53,26 @@ export function TransporteCaso({ onGoHome, onOpenDashboard }: TransporteCasoProp
             </div>
 
             <div className="metric-card-v2 accent-warning">
-              <span className="section-label-v2"><Info size={16} /> Reto de la Brecha</span>
-              <h3>Protección al Adulto Mayor</h3>
-              <p className="metric-caption-v2">
-                La modernización incluye medidas para eliminar el estrés tecnológico y garantizar
-                el derecho a la movilidad de quienes enfrentan barreras digitales.
-              </p>
-            </div>
+  <span className="section-label-v2"><Info size={16} /> El Impacto</span>
+  <h3>Lo positivo y los beneficios</h3>
+  <p className="metric-caption-v2">
+    <strong>• Experiencia de Viaje:</strong> Abordaje más rápido y sin filas, eliminando el retraso que genera el pago con monedas sueltas.
+    <br /><br />
+    <strong>• Conectividad Total:</strong> Comodidad absoluta al integrar el pasaje del Trolebús y el Metro mediante una sola tarjeta o código QR.
+    <br /><br />
+    <strong>• Beneficios Estratégicos:</strong> Mayor seguridad y reducción de costos operativos para la ciudad al minimizar el manejo de dinero en efectivo en las estaciones.
+  </p>
+</div>
 
             <div className="metric-card-v2 accent-success">
-              <span className="section-label-v2"><HeartHandshake size={16} /> Inclusión Humana</span>
-              <h3>Garantía de Acceso Social</h3>
+              <span className="section-label-v2"><HeartHandshake size={16} /> La Afectación</span>
+              <h3>La brecha y los perjudicados</h3>
               <p className="metric-caption-v2">
-                Taquillas humanas y recargas de barrio aseguran que las tarifas preferenciales lleguen
-                a quienes más lo necesitan, sin exclusión tecnológica.
-              </p>
-            </div>
+    <strong>• El Reto de la Brecha:</strong> El uso obligatorio de herramientas digitales genera estrés tecnológico y limita la autonomía de movilidad en los adultos mayores.
+    <br /><br />
+    <strong>• Inclusión Humana:</strong> Un sistema 100% digital excluye a quienes dependen del efectivo (estudiantes y sectores vulnerables), haciendo vital conservar taquillas físicas para garantizar sus tarifas preferenciales.
+  </p>
+</div>
           </aside>
 
           {/* RIGHT: imagen + beneficios */}
