@@ -18,7 +18,7 @@ export default function GlobalNav({
       <div className="topbar-left">
         <div className="logo-mark">IDE-EC</div>
       </div>
-      <nav className="nav-links" aria-label="Navegacion principal">
+      <nav className="nav-links" aria-label="Navegación principal">
         <button type="button" className="nav-link-button" onClick={onGoHome}>
           Inicio
         </button>
@@ -30,9 +30,6 @@ export default function GlobalNav({
         </button>
         <button type="button" className="nav-link-button" onClick={onGoCase2}>
           Caso 2: Transporte
-        </button>
-        <button type="button" className="nav-link-button nav-link-button-muted" disabled>
-          Metodologia (pendiente)
         </button>
         <button type="button" className="nav-link-button nav-link-button-muted" disabled>
           Fuentes (pendiente)

@@ -232,6 +232,23 @@
   margin-bottom: 0.8rem;
 }
 
+.pp-kpi-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.pp-kpi-card-clickable {
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pp-kpi-link:hover .pp-kpi-card-clickable,
+.pp-kpi-link:focus-visible .pp-kpi-card-clickable {
+  transform: translateY(-2px);
+  border-color: rgba(128, 194, 255, 0.9);
+  box-shadow: 0 10px 24px rgba(28, 71, 149, 0.35);
+}
+
 .pp-kpi-title {
   margin: 0;
   font-size: 0.74rem;
@@ -331,6 +348,22 @@
   color: #13203b;
   border-radius: 12px;
   padding: 0.7rem 0.8rem;
+}
+
+.pp-inline-stat-link {
+  background: rgba(243, 249, 255, 0.96);
+  color: #13203b;
+  border-radius: 12px;
+  padding: 0.7rem 0.8rem;
+  text-decoration: none;
+  display: block;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pp-inline-stat-link:hover,
+.pp-inline-stat-link:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(19, 32, 59, 0.2);
 }
 
 .pp-inline-stats span {
@@ -444,7 +477,7 @@
   margin: 0.6rem 0 0;
   text-align: center;
   font-size: 0.8rem;
-  color: rgba(237, 242, 255, 0.68);
+  color: rgb(39, 186, 255);
 }
 
 .pp-chart-note {
