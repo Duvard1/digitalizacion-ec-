@@ -5,6 +5,9 @@ import './transporte.css';
 interface TransporteCasoProps {
   onGoHome: () => void;
   onOpenDashboard: () => void;
+  onOpenLotaip: () => void;
+  onOpenCase1: () => void;
+  onOpenCase2: () => void;
 }
 
 interface IconProps {
@@ -43,14 +46,21 @@ const FileText = (props: IconProps) => <FallbackIcon {...props} label="F" />;
 const Info = (props: IconProps) => <FallbackIcon {...props} label="I" />;
 const HeartHandshake = (props: IconProps) => <FallbackIcon {...props} label="H" />;
 
-export function TransporteCaso({ onGoHome, onOpenDashboard }: TransporteCasoProps) {
+export function TransporteCaso({
+  onGoHome,
+  onOpenDashboard,
+  onOpenLotaip,
+  onOpenCase1,
+  onOpenCase2,
+}: TransporteCasoProps) {
   return (
     <div className="page case-detail-page">
       <GlobalNav
         onGoHome={onGoHome}
         onGoDashboard={onOpenDashboard}
-        onGoCase1={() => {}}
-        onGoCase2={() => {}}
+        onGoLotaip={onOpenLotaip}
+        onGoCase1={onOpenCase1}
+        onGoCase2={onOpenCase2}
       />
 
       <main className="case-content-v2">
@@ -114,7 +124,7 @@ export function TransporteCaso({ onGoHome, onOpenDashboard }: TransporteCasoProp
           <section className="main-story-v2">
             <div className="metro-image-container">
               <img
-                src="/images/Transporte.png"
+                src={`${import.meta.env.BASE_URL}images/Transporte.png`}
                 alt="Digitalización Transporte Quito"
                 className="metro-image"
               />
@@ -167,3 +177,4 @@ export function TransporteCaso({ onGoHome, onOpenDashboard }: TransporteCasoProp
     </div>
   );
 }
+

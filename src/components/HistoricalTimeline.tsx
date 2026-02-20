@@ -47,7 +47,11 @@ const parseTimelineCsv = (csvText: string): TimelineEvent[] => {
   return events
 }
 
-export default function HistoricalTimeline() {
+type HistoricalTimelineProps = {
+  onOpenLotaipPage: () => void
+}
+
+export default function HistoricalTimeline({ onOpenLotaipPage }: HistoricalTimelineProps) {
   const [events, setEvents] = useState<TimelineEvent[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -132,6 +136,10 @@ export default function HistoricalTimeline() {
           </div>
         </div>
 
+
+
+
+
         <div
           id="timeline-canvas"
           ref={trackRef}
@@ -164,6 +172,26 @@ export default function HistoricalTimeline() {
               )
             })}
         </div>
+
+        <div className="timeline-lotaip-wrapper">
+          <article className="timeline-lotaip-card" aria-label="LOTAIP y Digitalizacion del Estado Ecuatoriano">
+            <h3>LOTAIP y Digitalizaci&oacute;n del Estado Ecuatoriano</h3>
+            <p className="timeline-lotaip-subtitle">
+              Ley Org&aacute;nica de Transparencia y Acceso a la Informaci&oacute;n P&uacute;blica
+            </p>
+            <p className="timeline-lotaip-description">
+              Garantizando el derecho ciudadano a la informaci&oacute;n y
+              <br />
+              forzando la modernizaci&oacute;n del Estado hacia una gesti&oacute;n m&aacute;s
+              <br />
+              transparente y eficiente.
+            </p>
+            <button type="button" className="timeline-lotaip-button" onClick={onOpenLotaipPage}>
+              Ir a la p&aacute;gina 
+            </button>
+          </article>
+        </div>
+
       </div>
     </section>
   )

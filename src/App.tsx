@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react'
+﻿import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react'
 import './App.css'
 import {
   DASHBOARD_YEARS,
@@ -11,7 +11,8 @@ import GlobalNav from './components/GlobalNav'
 import GlobalFooter from './components/GlobalFooter'
 import HistoricalTimeline from './components/HistoricalTimeline'
 import { TransporteCaso } from './components/TransporteCaso'
-type View = 'landing' | 'dashboard' | 'payments-paradox' | 'trolebus-case'
+import LotaipPage from './components/LotaipPage'
+type View = 'landing' | 'dashboard' | 'payments-paradox' | 'trolebus-case' | 'lotaip-page'
 type MetricKey = 'gov' | 'acc' | 'eco' | 'pay'
 type DashboardScrollTarget = 'dashboard' | 'case2'
 
@@ -19,10 +20,12 @@ function LandingPage({
   onOpenDashboard,
   onOpenCase1,
   onOpenCase2,
+  onOpenLotaip,
 }: {
   onOpenDashboard: () => void
   onOpenCase1: () => void
   onOpenCase2: () => void
+  onOpenLotaip: () => void
 }) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -37,6 +40,7 @@ function LandingPage({
         className="dashboard-topbar"
         onGoHome={scrollToTop}
         onGoDashboard={onOpenDashboard}
+        onGoLotaip={onOpenLotaip}
         onGoCase1={onOpenCase1}
         onGoCase2={onOpenCase2}
       />
@@ -63,7 +67,7 @@ function LandingPage({
           </div>
         </section>
 
-        <HistoricalTimeline />
+        <HistoricalTimeline onOpenLotaipPage={onOpenLotaip} />
       </main>
 
       <GlobalFooter />
@@ -75,11 +79,13 @@ function DashboardPage({
   onGoHome,
   onOpenPaymentsParadox,
   onOpenCase2, // <--- 1. Agregar aquí
+  onOpenLotaip,
   initialScrollTarget,
 }: {
   onGoHome: () => void
   onOpenPaymentsParadox: () => void
   onOpenCase2: () => void // <--- 2. Y aquí el tipo
+  onOpenLotaip: () => void
   initialScrollTarget: DashboardScrollTarget
 }) {
   const [selectedYear, setSelectedYear] = useState<TimelineYear>(2018)
@@ -266,10 +272,10 @@ function DashboardPage({
       ],
       methodology: [
         'Cada componente se expresa en porcentaje y se normaliza en la misma escala.',
-        'El índice GOV se calcula con promedio aritmético simple de OSI, TII y HCI.',
-        `Para el año ${selectedYear}, el resultado del dashboard es ${getGovScore()}.`,
+        'El Ã­ndice GOV se calcula con promedio aritmÃ©tico simple de OSI, TII y HCI.',
+        `Para el aÃ±o ${selectedYear}, el resultado del dashboard es ${getGovScore()}.`,
       ],
-      sources: ['UN DESA - E-Government Survey (EGDI)', 'MINTEL - Estadísticas de gobierno digital', 'INEC - Datos de capital humano'],
+      sources: ['UN DESA - E-Government Survey (EGDI)', 'MINTEL - EstadÃ­sticas de gobierno digital', 'INEC - Datos de capital humano'],
     },
     acc: {
       title: 'ACC - Connectivity and Infrastructure Access',
@@ -277,13 +283,13 @@ function DashboardPage({
       inputs: [
         { label: 'IH - Hogares con acceso a internet', value: activeData.acc.ih },
         { label: 'UI - Personas que utilizan internet', value: activeData.acc.ui },
-        { label: 'SP - Teléfono inteligente', value: activeData.acc.sp },
+        { label: 'SP - TelÃ©fono inteligente', value: activeData.acc.sp },
         { label: 'AI - Analfabetismo digital', value: activeData.acc.ai },
       ],
       methodology: [
         'Se toman cuatro porcentajes de acceso y uso digital para el mismo periodo.',
         'Todos los indicadores pesan igual y se agregan mediante promedio simple.',
-        `Para el año ${selectedYear}, el ACC calculado es ${getAccScore()}.`,
+        `Para el aÃ±o ${selectedYear}, el ACC calculado es ${getAccScore()}.`,
       ],
       sources: ['INEC - TIC en hogares y personas', 'ARCOTEL/MINTEL - Cobertura y acceso', 'Encuestas nacionales de habilidades digitales'],
     },
@@ -292,27 +298,27 @@ function DashboardPage({
       formula: '%Delta ECO = ((V_t - V_{t-1}) / V_{t-1}) x 100',
       inputs: [
         { label: 'Volumen transaccional digital (V_t)', value: activeData.eco.value },
-        { label: 'Variación reportada del periodo', value: activeData.eco.trend.value },
+        { label: 'VariaciÃ³n reportada del periodo', value: activeData.eco.trend.value },
       ],
       methodology: [
         'El indicador principal representa el volumen agregado de transacciones digitales del periodo.',
-        'La tendencia muestra la variación porcentual frente al periodo anterior.',
+        'La tendencia muestra la variaciÃ³n porcentual frente al periodo anterior.',
         'El tablero publica valor principal, tendencia y su lectura operativa.',
       ],
-      sources: ['Banco Central del Ecuador - Estadísticas monetarias', 'Superintendencia de Bancos - Reportes del sistema financiero'],
+      sources: ['Banco Central del Ecuador - EstadÃ­sticas monetarias', 'Superintendencia de Bancos - Reportes del sistema financiero'],
     },
     pay: {
       title: 'PAY - Digital Payments',
-      formula: `PAY* = 0.50*Penetración + 0.30*AdopciónQR + 0.20*Interoperabilidad = ${formatPercent(getPayCompositeScore())}`,
+      formula: `PAY* = 0.50*PenetraciÃ³n + 0.30*AdopciÃ³nQR + 0.20*Interoperabilidad = ${formatPercent(getPayCompositeScore())}`,
       inputs: [
-        { label: 'Penetración de pagos digitales', value: activeData.pay.value },
-        { label: 'Adopción de QR', value: activeData.pay.qrAdoption },
+        { label: 'PenetraciÃ³n de pagos digitales', value: activeData.pay.value },
+        { label: 'AdopciÃ³n de QR', value: activeData.pay.qrAdoption },
         { label: 'Interoperabilidad (escala cualitativa)', value: getInteroperabilityLabel(activeData.pay.interoperability) },
       ],
       methodology: [
-        'Se combina la penetración total de pagos digitales con adopción de QR.',
+        'Se combina la penetraciÃ³n total de pagos digitales con adopciÃ³n de QR.',
         'La interoperabilidad se transforma a puntaje (Baja=40, Media=65, Alta=85).',
-        `La fórmula ponderada genera una referencia comparativa para el año ${selectedYear}.`,
+        `La fÃ³rmula ponderada genera una referencia comparativa para el aÃ±o ${selectedYear}.`,
       ],
       sources: ['Banco Central del Ecuador - Medios de pago', 'Asobanca / Superintendencia de Bancos', 'Reportes del ecosistema fintech'],
     },
@@ -323,11 +329,6 @@ function DashboardPage({
   const scrollToDashboardTitle = () => {
     const dashboardTitle = document.getElementById('dashboard-title')
     dashboardTitle?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-
-  const scrollToCase2 = () => {
-    const case2Card = document.getElementById('case-study-2')
-    case2Card?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   useEffect(() => {
@@ -342,8 +343,9 @@ function DashboardPage({
         className="dashboard-topbar"
         onGoHome={onGoHome}
         onGoDashboard={scrollToDashboardTitle}
+        onGoLotaip={onOpenLotaip}
         onGoCase1={onOpenPaymentsParadox}
-        onGoCase2={scrollToCase2}
+        onGoCase2={onOpenCase2}
       />
 
       <main className="dashboard-main">
@@ -351,7 +353,7 @@ function DashboardPage({
           <div>
             <h1 id="dashboard-title">IDE-EC Dashboard Interactivo</h1>
             <p>
-              Monitoreo en tiempo real de la transición de la economía digital del Ecuador en los ejes
+              Monitoreo en tiempo real de la transición de la economí­a digital del Ecuador en los ejes
               de gobierno, acceso, economía y pagos.
             </p>
           </div>
@@ -434,7 +436,7 @@ function DashboardPage({
                   },
                   {
                     key: 'SP',
-                    label: 'Teléfono inteligente',
+                    label: 'TelÃ©fono inteligente',
                     value: activeData.acc.sp,
                     className: 'acc-bar-sp',
                   },
@@ -467,7 +469,7 @@ function DashboardPage({
               onKeyDown={(event) => handleMetricCardKeyDown(event, 'eco')}
             >
               <header>
-                <span className="card-label">ECO. ECONOMÍA DIGITAL</span>
+                <span className="card-label">ECO. ECONOMÃA DIGITAL</span>
               </header>
               <div className="metric-main eco-main">
                 <div>
@@ -508,7 +510,7 @@ function DashboardPage({
               </div>
               <div className="pay-details">
                 <div>
-                  <span>Adopción QR</span>
+                  <span>AdopciÃ³n QR</span>
                   <strong>{activeData.pay.qrAdoption}</strong>
                 </div>
                 <div>
@@ -523,10 +525,10 @@ function DashboardPage({
         <section className="projection-section">
           <div className="projection-header">
             <div>
-              <h2>Simulación de proyección 2018-2026</h2>
-              <p>Ajusta la línea de tiempo para visualizar metas de crecimiento digital.</p>
+              <h2>SimulaciÃ³n de proyecciÃ³n 2018-2026</h2>
+              <p>Ajusta la lÃ­nea de tiempo para visualizar metas de crecimiento digital.</p>
             </div>
-            <div className="scenario-pill">AÑO: {selectedYear}</div>
+            <div className="scenario-pill">AÃ‘O: {selectedYear}</div>
           </div>
           <div className="projection-slider">
             <div className="slider-labels">
@@ -553,7 +555,7 @@ function DashboardPage({
                     event.stopPropagation()
                     setSelectedYear(year)
                   }}
-                  aria-label={`Seleccionar año ${year}`}
+                  aria-label={`Seleccionar aÃ±o ${year}`}
                 />
               ))}
               <div
@@ -561,7 +563,7 @@ function DashboardPage({
                 style={{ left: `${progressPct}%` }}
                 role="slider"
                 tabIndex={0}
-                aria-label="Control deslizante de año"
+                aria-label="Control deslizante de aÃ±o"
                 aria-valuemin={2018}
                 aria-valuemax={2026}
                 aria-valuenow={selectedYear}
@@ -586,7 +588,7 @@ function DashboardPage({
                 la inclusión financiera en el sector informal.
               </p>
               <button className="story-button" onClick={onOpenPaymentsParadox}>
-                Ver análisis completo -&gt;
+                Ver anÃ¡lisis completo -&gt;
               </button>
             </article>
             <article id="case-study-2" className="story-card right-story">
@@ -616,7 +618,7 @@ function DashboardPage({
           >
             <header className="metric-modal-header">
               <div>
-                <p className="metric-modal-kicker">Metodología y fórmula</p>
+                <p className="metric-modal-kicker">MetodologÃ­a y fÃ³rmula</p>
                 <h3 className="metric-modal-title">{activeMethodology.title}</h3>
               </div>
               <button type="button" className="metric-modal-close" onClick={closeMetricModal}>
@@ -626,7 +628,7 @@ function DashboardPage({
 
             <div className="metric-modal-content">
               <section className="metric-modal-block">
-                <h4>Fórmula de cálculo</h4>
+                <h4>FÃ³rmula de cÃ¡lculo</h4>
                 <code className="metric-formula">{activeMethodology.formula}</code>
               </section>
 
@@ -643,7 +645,7 @@ function DashboardPage({
               </section>
 
               <section className="metric-modal-block">
-                <h4>Metodología</h4>
+                <h4>MetodologÃ­a</h4>
                 <ul>
                   {activeMethodology.methodology.map((step) => (
                     <li key={step}>{step}</li>
@@ -689,11 +691,19 @@ function App() {
   const openCase2 = () => {
     setView('trolebus-case')
   }
+
+  const openLotaip = () => {
+    setView('lotaip-page')
+  }
+
   if (view === 'trolebus-case') {
   return (
     <TransporteCaso 
       onGoHome={() => setView('landing')} 
       onOpenDashboard={() => openDashboard('dashboard')}
+      onOpenLotaip={openLotaip}
+      onOpenCase1={openCase1}
+      onOpenCase2={openCase2}
     />
   )
 }
@@ -704,6 +714,19 @@ function App() {
         onGoHome={() => setView('landing')}
         onOpenDashboard={() => openDashboard('dashboard')}
         onOpenCase2={openCase2}
+        onOpenLotaip={openLotaip}
+      />
+    )
+  }
+
+  if (view === 'lotaip-page') {
+    return (
+      <LotaipPage
+        onGoHome={() => setView('landing')}
+        onOpenDashboard={() => openDashboard('dashboard')}
+        onOpenLotaip={openLotaip}
+        onOpenCase1={openCase1}
+        onOpenCase2={openCase2}
       />
     )
   }
@@ -713,7 +736,8 @@ function App() {
       <DashboardPage
         onGoHome={() => setView('landing')}
         onOpenPaymentsParadox={openCase1}
-        onOpenCase2={openCase2} // <--- AÑADE ESTA LÍNEA
+        onOpenCase2={openCase2} // <--- AÃ‘ADE ESTA LÃNEA
+        onOpenLotaip={openLotaip}
         initialScrollTarget={dashboardScrollTarget}
       />
     )
@@ -724,8 +748,11 @@ function App() {
       onOpenDashboard={() => openDashboard('dashboard')}
       onOpenCase1={openCase1}
       onOpenCase2={openCase2}
+      onOpenLotaip={openLotaip}
     />
   )
 }
 
 export default App
+
+

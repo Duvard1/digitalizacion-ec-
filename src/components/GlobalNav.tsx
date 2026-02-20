@@ -1,6 +1,7 @@
 type GlobalNavProps = {
   onGoHome: () => void
   onGoDashboard: () => void
+  onGoLotaip: () => void
   onGoCase1: () => void
   onGoCase2: () => void
   className?: string
@@ -9,6 +10,7 @@ type GlobalNavProps = {
 export default function GlobalNav({
   onGoHome,
   onGoDashboard,
+  onGoLotaip,
   onGoCase1,
   onGoCase2,
   className = '',
@@ -23,7 +25,10 @@ export default function GlobalNav({
           Inicio
         </button>
         <button type="button" className="nav-link-button" onClick={onGoDashboard}>
-          Dashboards
+          Indicadores
+        </button>
+        <button type="button" className="nav-link-button" onClick={onGoLotaip}>
+          LOTAIP
         </button>
         <button type="button" className="nav-link-button" onClick={onGoCase1}>
           Caso 1: Pagos
@@ -31,9 +36,14 @@ export default function GlobalNav({
         <button type="button" className="nav-link-button" onClick={onGoCase2}>
           Caso 2: Transporte
         </button>
-        <button type="button" className="nav-link-button nav-link-button-muted" disabled>
-          Fuentes (pendiente)
-        </button>
+        <a
+          className="nav-link-button"
+          href="https://uceedu-my.sharepoint.com/:f:/g/personal/bcmalla_uce_edu_ec/IgD2bm69Iqh5SYGNmVnz1tV8ASvx1mbvIaJ0sMG2BOvrTL0?e=M2VKGg"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Fuentes
+        </a>
       </nav>
     </header>
   )

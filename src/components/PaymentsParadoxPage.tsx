@@ -5,6 +5,7 @@ import GlobalFooter from './GlobalFooter'
 type PaymentsParadoxPageProps = {
   onGoHome: () => void
   onOpenDashboard: () => void
+  onOpenLotaip: () => void
   onOpenCase2: () => void
 }
 
@@ -483,6 +484,7 @@ function TransactionsByChannelChart() {
 export default function PaymentsParadoxPage({
   onGoHome,
   onOpenDashboard,
+  onOpenLotaip,
   onOpenCase2,
 }: PaymentsParadoxPageProps) {
   const tutiImageSrc = `${import.meta.env.BASE_URL}images/tuti-case.png`
@@ -502,6 +504,7 @@ export default function PaymentsParadoxPage({
         className="dashboard-topbar"
         onGoHome={onGoHome}
         onGoDashboard={onOpenDashboard}
+        onGoLotaip={onOpenLotaip}
         onGoCase1={scrollToTop}
         onGoCase2={onOpenCase2}
       />
@@ -576,7 +579,12 @@ export default function PaymentsParadoxPage({
               caption="Año 2024"
               href="https://ekosnegocios.com/articulo/tuti-fue-la-empresa-con-mayor-tasa-de-crecimiento-anual-en-ingresos-en-2024-sus-ventas-alcanzaron-usd-693-24-millones"
             />
-            <KpiCard title="Incentivo principal" value="$13.8M" caption="Ahorro en comisiones (efectivo)" />
+            <KpiCard
+              title="Incentivo principal"
+              value="$29.9M"
+              caption="Ahorro en comisiones (efectivo)"
+              href="https://www.superbancos.gob.ec/bancos/pronunciamiento-de-la-sb-frente-a-pagos-realizados-con-tarjeta-de-credito-o-debito/"
+            />
 
             <div className="pp-impact-list">
               <h4>Impacto Negativo</h4>

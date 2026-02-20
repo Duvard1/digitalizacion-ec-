@@ -525,6 +525,63 @@
   border-radius: 999px;
 }
 
+.timeline-lotaip-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 2rem auto 0px;
+}
+
+.timeline-lotaip-card {
+  width: min(100%, 780px);
+  text-align: center;
+  padding: 1.4rem 1.3rem;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: linear-gradient(160deg, rgba(15, 23, 42, 0.88), rgba(17, 94, 89, 0.22));
+  box-shadow: 0 18px 38px rgba(2, 6, 23, 0.35);
+}
+
+.timeline-lotaip-card h3 {
+  margin: 0;
+  font-size: 1.28rem;
+  color: #f8fafc;
+}
+
+.timeline-lotaip-subtitle {
+  margin: 0.55rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: rgba(165, 243, 252, 0.95);
+}
+
+.timeline-lotaip-description {
+  margin: 0.9rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(226, 232, 240, 0.94);
+}
+
+.timeline-lotaip-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(125, 211, 252, 0.7);
+  color: #e0f2fe;
+  background: rgba(14, 116, 144, 0.24);
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.timeline-lotaip-button:hover {
+  transform: translateY(-1px);
+  background: rgba(14, 116, 144, 0.35);
+  border-color: rgba(125, 211, 252, 0.95);
+}
+
 .timeline-v2-canvas {
   display: flex;
   gap: 1.5rem;
@@ -2076,6 +2133,26 @@
 
   .timeline-v2-legend {
     display: none;
+  }
+
+  .timeline-lotaip-wrapper {
+    margin-bottom: 1.3rem;
+  }
+
+  .timeline-lotaip-card {
+    padding: 1.15rem 0.95rem;
+  }
+
+  .timeline-lotaip-card h3 {
+    font-size: 1.04rem;
+  }
+
+  .timeline-lotaip-subtitle {
+    font-size: 0.83rem;
+  }
+
+  .timeline-lotaip-description {
+    font-size: 0.86rem;
   }
 
   .timeline-v2-item {

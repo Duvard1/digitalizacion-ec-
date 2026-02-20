@@ -1,0 +1,391 @@
+.lotaip-page {
+  background: #020617;
+  color: #e2e8f0;
+}
+
+.lotaip-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.lotaip-shell {
+  width: min(1160px, 92vw);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lotaip-hero {
+  padding: 6rem 0 5.6rem;
+  background:
+    radial-gradient(1200px 580px at 100% 0%, rgba(37, 99, 235, 0.26), transparent 64%),
+    radial-gradient(950px 500px at 0% 100%, rgba(14, 116, 144, 0.22), transparent 60%),
+    linear-gradient(180deg, #050e21 0%, #03112d 42%, #020d25 100%);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.18);
+}
+
+.lotaip-hero-badges {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.lotaip-chip {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #a3b6d4;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 999px;
+  padding: 0.35rem 0.68rem;
+  background: rgba(15, 23, 42, 0.52);
+}
+
+.lotaip-chip-highlight {
+  color: #7ec6ff;
+  border-color: rgba(56, 189, 248, 0.45);
+  background: rgba(14, 116, 144, 0.2);
+}
+
+.lotaip-hero h1 {
+  margin: 1.35rem 0 0;
+  font-size: clamp(2.1rem, 4.3vw, 4rem);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: #f8fafc;
+}
+
+.lotaip-hero h1 span {
+  color: #2d7ff9;
+}
+
+.lotaip-hero p {
+  margin: 1.5rem 0 0;
+  font-size: clamp(1rem, 1.25vw, 1.35rem);
+  line-height: 1.6;
+  color: rgba(186, 201, 223, 0.96);
+  max-width: 740px;
+}
+
+.lotaip-hero-button {
+  border: 1px solid rgba(125, 211, 252, 0.56);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(17, 94, 89, 0.32));
+  color: #dbeafe;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 15px;
+  width: 150px;
+  text-align: center;
+  
+}
+
+.lotaip-hero-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(56, 189, 248, 0.9);
+  box-shadow: 0 10px 26px rgba(14, 116, 144, 0.35);
+}
+
+.lotaip-pillars {
+  padding: 4.5rem 0 4rem;
+  background:
+    radial-gradient(900px 360px at 50% 0%, rgba(30, 64, 175, 0.2), transparent 65%),
+    #050c1b;
+}
+
+.lotaip-pillars h2 {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1.9rem, 3vw, 3.2rem);
+  color: #f8fafc;
+}
+
+.lotaip-pillars-subtitle {
+  margin: 1rem auto 0;
+  max-width: 760px;
+  text-align: center;
+  color: rgba(170, 187, 209, 0.95);
+  line-height: 1.65;
+}
+
+.lotaip-pillars-grid {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.lotaip-pillar-card {
+  background: linear-gradient(170deg, rgba(22, 34, 58, 0.88), rgba(12, 20, 38, 0.88));
+  border-radius: 16px;
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  padding: 1.3rem 1.1rem 1.2rem;
+  box-shadow: inset 0 0 0 1px rgba(8, 47, 73, 0.25);
+}
+
+.lotaip-pillar-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(37, 99, 235, 0.5);
+  color: #93c5fd;
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+.lotaip-pillar-card h3 {
+  margin: 1rem 0 0;
+  color: #f8fafc;
+  font-size: 1.25rem;
+}
+
+.lotaip-pillar-card p {
+  margin: 0.72rem 0 0;
+  color: rgba(177, 195, 220, 0.94);
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
+.lotaip-impact {
+  padding: 4.5rem 0 3.8rem;
+  background: linear-gradient(180deg, #030d1f 0%, #030b1a 100%);
+}
+
+.lotaip-impact-shell h2 {
+  margin: 0;
+  font-size: clamp(1.95rem, 3vw, 3.2rem);
+  color: #f8fafc;
+}
+
+.lotaip-impact-subtitle {
+  margin: 0.5rem 0 0;
+  color: rgba(148, 163, 184, 0.95);
+}
+
+.lotaip-impact-card {
+  margin: 1.8rem auto 0;
+  width: min(720px, 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  background: linear-gradient(170deg, rgba(22, 34, 58, 0.9), rgba(9, 18, 35, 0.95));
+  box-shadow: 0 22px 50px rgba(2, 6, 23, 0.42);
+  padding: 1.1rem 1.2rem 1.5rem;
+}
+
+.lotaip-impact-card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lotaip-impact-card header h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #e2e8f0;
+}
+
+.lotaip-impact-card header span {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #7dd3fc;
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  border-radius: 999px;
+  padding: 0.23rem 0.62rem;
+  letter-spacing: 0.02em;
+}
+
+.lotaip-gauges-row {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.lotaip-gauge {
+  display: grid;
+  place-items: center;
+}
+
+.lotaip-gauge-ring {
+  position: relative;
+  width: 190px;
+  height: 190px;
+}
+
+.lotaip-gauge-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.lotaip-gauge-ring .gauge-track {
+  fill: none;
+  stroke-width: 12;
+  stroke: rgba(15, 23, 42, 0.96);
+}
+
+.lotaip-gauge-ring .gauge-progress {
+  fill: none;
+  stroke-width: 12;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.55s ease;
+}
+
+.lotaip-gauge-ring.cyan .gauge-progress {
+  stroke: #22d3ee;
+  filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.7));
+}
+
+.lotaip-gauge-ring.blue .gauge-progress {
+  stroke: #2563eb;
+  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.7));
+}
+
+.lotaip-gauge-center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.lotaip-gauge-center strong {
+  color: #f8fafc;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.lotaip-gauge-center span {
+  margin-top: 0.3rem;
+  color: rgba(148, 163, 184, 0.9);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.lotaip-gauge-caption {
+  margin: 0.72rem 0 0;
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.lotaip-gauge-tag {
+  margin-top: 0.35rem;
+  border: 1px solid;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.lotaip-gauge-tag.cyan {
+  color: #5eead4;
+  border-color: rgba(45, 212, 191, 0.5);
+  background: rgba(13, 148, 136, 0.18);
+}
+
+.lotaip-gauge-tag.blue {
+  color: #bfdbfe;
+  border-color: rgba(96, 165, 250, 0.5);
+  background: rgba(37, 99, 235, 0.22);
+}
+
+.lotaip-impact-note {
+  margin-top: 1.35rem;
+  border-radius: 14px;
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  background:
+    radial-gradient(900px 200px at 100% 0%, rgba(37, 99, 235, 0.18), transparent 70%),
+    rgba(11, 19, 39, 0.85);
+  padding: 1rem 1.1rem;
+}
+
+.lotaip-impact-note h4 {
+  margin: 0;
+  color: #e2e8f0;
+}
+
+.lotaip-impact-note p {
+  margin: 0.5rem 0 0;
+  color: rgba(179, 196, 219, 0.95);
+  line-height: 1.6;
+}
+
+.lotaip-conclusion {
+  background: linear-gradient(180deg, #2458c8 0%, #1d4db5 100%);
+  padding: 4rem 0 4.2rem;
+}
+
+.lotaip-conclusion h2 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(1.9rem, 3.2vw, 3rem);
+  line-height: 1.12;
+}
+
+.lotaip-conclusion p {
+  margin: 0.9rem 0 0;
+  color: rgba(219, 234, 254, 0.95);
+  line-height: 1.58;
+}
+
+.lotaip-conclusion blockquote {
+  margin: 1.35rem 0 0;
+  padding: 1.1rem 1.2rem;
+  border-radius: 14px;
+  border: 1px solid rgba(147, 197, 253, 0.45);
+  background: rgba(15, 23, 42, 0.55);
+  color: #dbeafe;
+  line-height: 1.6;
+}
+
+.lotaip-conclusion small {
+  display: inline-block;
+  margin-top: 1rem;
+  font-weight: 700;
+  color: #67e8f9;
+}
+
+@media (max-width: 1080px) {
+  .lotaip-pillars-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .lotaip-hero {
+    padding: 5.2rem 0 4.2rem;
+  }
+
+  .lotaip-gauges-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .lotaip-pillars-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lotaip-hero p {
+    max-width: 100%;
+  }
+
+  .lotaip-impact-card {
+    padding: 1rem 0.85rem 1.15rem;
+  }
+
+  .lotaip-gauge-ring {
+    width: 170px;
+    height: 170px;
+  }
+}
