@@ -8,13 +8,31 @@ type PaymentsParadoxPageProps = {
   onOpenCase2: () => void
 }
 
-function KpiCard({ title, value, caption }: { title: string; value: string; caption: string }) {
-  return (
-    <article className="pp-kpi-card">
+function KpiCard({
+  title,
+  value,
+  caption,
+  href,
+}: {
+  title: string
+  value: string
+  caption: string
+  href?: string
+}) {
+  const content = (
+    <article className={`pp-kpi-card${href ? ' pp-kpi-card-clickable' : ''}`}>
       <p className="pp-kpi-title">{title}</p>
       <p className="pp-kpi-value">{value}</p>
       <p className="pp-kpi-caption">{caption}</p>
     </article>
+  )
+
+  if (!href) return content
+
+  return (
+    <a className="pp-kpi-link" href={href} target="_blank" rel="noreferrer">
+      {content}
+    </a>
   )
 }
 
@@ -22,7 +40,7 @@ const CHANNEL_YEARS = [2019, 2020, 2021] as const
 
 const CHANNEL_SERIES = [
   { key: 'Digital', color: '#2e5b9e', values: [109, 173, 285] },
-  { key: 'Fisico', color: '#f08f1a', values: [245, 204, 258] },
+  { key: 'Físico', color: '#f08f1a', values: [245, 204, 258] },
   { key: 'Remoto', color: '#7a66ac', values: [157, 122, 151] },
 ] as const
 
@@ -118,7 +136,7 @@ function MultiLineChart({
     values.map((value, index) => `${index === 0 ? 'M' : 'L'} ${xForIndex(index)} ${yForValue(value)}`).join(' ')
 
   return (
-    <div className="pp-data-chart-wrap" role="img" aria-label="Grafico comparativo">
+    <div className="pp-data-chart-wrap" role="img" aria-label="Gráfico comparativo">
       <svg viewBox={`0 0 ${width} ${height}`} className="pp-data-chart">
         {ticks.map((tick) => (
           <g key={`tick-${tick}`}>
@@ -194,12 +212,12 @@ function EfficiencyBarsChart() {
   const latest = FINANCIAL_DATA.TUTI.length - 1
   const data = [
     {
-      label: 'Tuti (Rapido)',
+      label: 'Tuti (Rápido)',
       value: FINANCIAL_DATA.TUTI[latest].ventas / FINANCIAL_DATA.TUTI[latest].activo,
       color: '#8b5cf6',
     },
     {
-      label: 'Tia (Medio)',
+      label: 'Tía (Medio)',
       value: FINANCIAL_DATA.TIA[latest].ventas / FINANCIAL_DATA.TIA[latest].activo,
       color: '#fbbf24',
     },
@@ -213,7 +231,7 @@ function EfficiencyBarsChart() {
   const maxValue = Math.max(...data.map((d) => d.value))
 
   return (
-    <div className="pp-efficiency-bars" role="img" aria-label="Rotacion de activos comparada">
+    <div className="pp-efficiency-bars" role="img" aria-label="Rotación de activos comparada">
       {data.map((item) => (
         <div key={item.label} className="pp-eff-row">
           <div className="pp-eff-label">{item.label}</div>
@@ -330,7 +348,7 @@ const SALES_SERIES: LineSeries[] = [
     fillColor: 'rgba(139, 92, 246, 0.12)',
   },
   {
-    key: 'Tia (DeUna)',
+    key: 'Tía (DeUna)',
     color: '#f59e0b',
     values: FINANCIAL_DATA.TIA.map((d) => d.ventas),
     dashed: true,
@@ -344,7 +362,7 @@ const SALES_SERIES: LineSeries[] = [
 
 const MARGIN_SERIES: LineSeries[] = [
   {
-    key: 'Margen Tia',
+    key: 'Margen Tía',
     color: '#f59e0b',
     values: calculateMargin(FINANCIAL_DATA.TIA),
   },
@@ -369,7 +387,7 @@ const SHARE_LAYERS: ShareLayer[] = [
     values: calculateShare(FINANCIAL_DATA.TUTI),
   },
   {
-    key: 'Tia (Tradicional)',
+    key: 'Tía (Tradicional)',
     fill: 'rgba(245, 158, 11, 0.45)',
     stroke: '#f59e0b',
     values: calculateShare(FINANCIAL_DATA.TIA),
@@ -398,7 +416,7 @@ function TransactionsByChannelChart() {
     values.map((value, index) => `${index === 0 ? 'M' : 'L'} ${xForIndex(index)} ${yForValue(value)}`).join(' ')
 
   return (
-    <div className="pp-line-chart-wrap" role="img" aria-label="Evolucion de transacciones por canal 2019 a 2021">
+    <div className="pp-line-chart-wrap" role="img" aria-label="Evolución de transacciones por canal 2019 a 2021">
       <svg viewBox={`0 0 ${width} ${height}`} className="pp-line-chart">
         {ticks.map((tick) => (
           <g key={`tick-${tick}`}>
@@ -450,7 +468,14 @@ function TransactionsByChannelChart() {
           </div>
         ))}
       </div>
-      <p className="pp-chart-source">Elaboracion y fuente: Asobanca</p>
+      <a
+        className="pp-chart-source"
+        href="https://asobanca.org.ec/wp-content/uploads/2022/07/Transacciones-digital.pdf"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Elaboración y fuente: Asobanca
+      </a>
     </div>
   )
 }
@@ -460,6 +485,9 @@ export default function PaymentsParadoxPage({
   onOpenDashboard,
   onOpenCase2,
 }: PaymentsParadoxPageProps) {
+  const tutiImageSrc = `${import.meta.env.BASE_URL}images/tuti-case.png`
+  const deunaImageSrc = `${import.meta.env.BASE_URL}images/deuna-phone.png`
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -486,20 +514,25 @@ export default function PaymentsParadoxPage({
               La Paradoja de los <span>Pagos</span> en Ecuador
             </h1>
             <p className="pp-hero-copy">
-              El efectivo vs. la billetera digital: Como el gigante del descuento frena la adopcion digital
-              mientras las Fintech revolucionan la inclusion financiera.
+              El efectivo vs. la billetera digital: cómo el gigante del descuento frena la adopción
+              digital mientras las Fintech revolucionan la inclusión financiera.
             </p>
             <div className='pp-hero-metric-container'>
-            <div className="pp-hero-metric">
-              <span>Retiros cajero (avg)</span>
+            <a
+              className="pp-hero-metric"
+              href="https://www.primicias.ec/economia/reduccion-retiros-dinero-efectivo-pagos-digitales-billeteras-ecuador-108556/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>Retiro promedio en cajero</span>
               <p className="pp-hero-compare">
                 <s>$112</s>
-                <span className="pp-hero-arrow"> - </span>
+                <span className="pp-hero-arrow"> → </span>
                 <strong>$88.90</strong>
               </p>
-            </div>
+            </a>
             <button type="button" className="pp-outline-btn" onClick={scrollToBattle}>
-              Ver Graficas
+              Ver gráficas
             </button>
 
             </div>
@@ -511,7 +544,7 @@ export default function PaymentsParadoxPage({
             <h2>
               El Caso Tuti:
               <br />
-              <span>El Freno a la Digitalizacion</span>
+              <span>¿ El Freno a la Digitalización ?</span>
             </h2>
             <p>
               Tuti ha crecido exponencialmente, pasando de USD 2,4 millones en 2019 a facturar USD 693,2
@@ -521,36 +554,43 @@ export default function PaymentsParadoxPage({
             <div className="pp-photo-card">
               <img
                 className="pp-photo-image"
-                src="/images/tuti-case.png"
+                src={tutiImageSrc}
                 alt="Contexto visual de pagos en efectivo en supermercados"
               />
             </div>
             <article className="pp-note">
-              <h3>La Digitalizacion Invisible (Paradoja)</h3>
+              <h3>La Digitalización Invisible (Paradoja)</h3>
               <p>
-              Aunque obligan al cliente a usar efectivo, su operaciÃ³n interna es 100% digital. Utilizan facturaciÃ³n electrÃ³nica masiva (SRI) para automatizar logÃ­stica y controlar inventarios sin necesidad de tarjetas de lealtad
+                Aunque obligan al cliente a usar efectivo, su operación interna es 100% digital.
+                Utilizan facturación electrónica masiva (SRI) para automatizar logística y controlar
+                inventarios sin necesidad de tarjetas de lealtad.
               </p>
             </article>
           </div>
 
           <aside className="pp-right-column">
-            <h3>Metricas de impacto clave</h3>
-            <KpiCard title="Facturacion estimada" value="$693.2M" caption="AÃ±o 2024" />
+            <h3>Métricas de impacto clave</h3>
+            <KpiCard
+              title="Facturación estimada"
+              value="$693.2M"
+              caption="Año 2024"
+              href="https://ekosnegocios.com/articulo/tuti-fue-la-empresa-con-mayor-tasa-de-crecimiento-anual-en-ingresos-en-2024-sus-ventas-alcanzaron-usd-693-24-millones"
+            />
             <KpiCard title="Incentivo principal" value="$13.8M" caption="Ahorro en comisiones (efectivo)" />
 
             <div className="pp-impact-list">
               <h4>Impacto Negativo</h4>
               <article>
-                <strong>Mantiene la cultura del fisico</strong>
-                <p>Refuerza el hÃ¡bito del retiro de efectivo en cajeros para compras diarias, estancando la adopciÃ³n digital.</p>
+                <strong>Mantiene la cultura del físico</strong>
+                <p>Refuerza el hábito del retiro de efectivo en cajeros para compras diarias, estancando la adopción digital.</p>
               </article>
               <article>
                 <strong>Frena a la competencia</strong>
-                <p>Obliga a competidores a bajar mÃ¡rgenes o adoptar estrategias similares de "solo efectivo" para competir en precio.</p>
+                <p>Obliga a competidores a bajar márgenes o adoptar estrategias similares de "solo efectivo" para competir en precio.</p>
               </article>
               <article>
-                <strong>Perdida de trazabilidad</strong>
-                <p>Reduce la visibilidad de datos transaccionales necesarios para anÃ¡lisis econÃ³mico y crediticio del sector.</p>
+                <strong>Pérdida de trazabilidad</strong>
+                <p>Reduce la visibilidad de datos transaccionales necesarios para análisis económico y crediticio del sector.</p>
               </article>
             </div>
           </aside>
@@ -560,61 +600,71 @@ export default function PaymentsParadoxPage({
           <div className="pp-phone-wrap">
             <img
               className="pp-phone-image"
-              src="/images/deuna-phone.png"
+              src={deunaImageSrc}
               alt="Visual de caso Deuna y pago digital"
             />
           </div>
 
           <div className="pp-deuna-column">
-            <p className="pp-badge">CASO DE EXITO</p>
+            <p className="pp-badge">CASO DE ÉXITO</p>
             <h2>
               El Caso Deuna:
               <br />
-              <span>El Motor de la Digitalizacion</span>
+              <span>El Motor de la Digitalización</span>
             </h2>
             <p>
-              Deuna ha logrado penetrar el comercio informal, permitiendo que negocios pequenos y personas no
+              Deuna ha logrado penetrar el comercio informal, permitiendo que negocios pequeños y personas no
               bancarizadas acepten pagos digitales sin necesidad de terminales costosos.
             </p>
             <div className="pp-impact-positive">
               <h4>Impacto Positivo</h4>
               <article>
-                <strong>Inclusion financiera masiva</strong>
+                <strong>Inclusión financiera masiva</strong>
                 <p>Llegando a sectores no bancarizados e integrando a millones al sistema formal.</p>
               </article>
               <article>
                 <strong>Reemplazo del efectivo</strong>
-                <p>Facilitando micro-transacciones digitales seguras en pequenos comercios.</p>
+                <p>Facilitando microtransacciones digitales seguras en pequeños comercios.</p>
               </article>
               <article>
-                <strong>Adopcion de bajo costo</strong>
+                <strong>Adopción de bajo costo</strong>
                 <p>Eliminando barreras con comisiones transparentes y registro simplificado.</p>
               </article>
             </div>
             <div className="pp-inline-stats">
-              <div>
+              <a
+                className="pp-inline-stat-link"
+                href="https://ccq.ec/deuna-deuna-fortalece-su-ecosistema-con-mas-de-20-cooperativas-aliadas-en-ecuador/"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <span>Clientes activos</span>
                 <strong>5 millones</strong>
-              </div>
-              <div>
+              </a>
+              <a
+                className="pp-inline-stat-link"
+                href="https://www.expreso.ec/actualidad/economia/aplicacion-pagos-deuna-suma-380-mil-comercios-escala-nacional-208200.html#:~:text=cobro%20mediante%20Deuna.-,Actualmente%2C%20Deuna%20est%C3%A1%20habilitada%20en%20m%C3%A1s%20de%20380.000%20comercios%20a,171%25%20frente%20al%20a%C3%B1o%20anterior."
+                target="_blank"
+                rel="noreferrer"
+              >
                 <span>Comercios afiliados</span>
-                <strong>420,000</strong>
-              </div>
+                <strong>380.000</strong>
+              </a>
             </div>
           </div>
         </section>
 
         <section className="pp-battle" id="contacto">
           <div className="pp-battle-main">
-            <p className="pp-badge danger">TENDENCIA CRITICA</p>
+            <p className="pp-badge danger">TENDENCIA CRÍTICA</p>
             <h2 id="pp-battle-title">La Batalla por el Pago: Efectivo vs Digital</h2>
             <p>
-            La pandemia cambio las preferencias en las transacciones. En 2021, el mayor numero se
-                realizo por canales digitales con 285 millones, 65,1% mas que en 2020 y 161% mas frente a
-                2019.
+              La pandemia cambió las preferencias en las transacciones. En 2021, el mayor número se
+              realizó por canales digitales con 285 millones, 65,1% más que en 2020 y 161% más frente a
+              2019.
             </p>
             <div className="pp-chart-panel">
-              <h3 className="pp-chart-title">Grafico: Evolucion del numero de transacciones por tipo de canal</h3>
+              <h3 className="pp-chart-title">Gráfico: evolución del número de transacciones por tipo de canal</h3>
               <p className="pp-chart-subtitle">En millones de transacciones</p>
               <TransactionsByChannelChart />
             </div>
@@ -636,9 +686,9 @@ export default function PaymentsParadoxPage({
                       />
                     </div>
                     <p className="pp-chart-explanation">
-                      La linea violeta (Tuti) muestra un crecimiento explosivo desde 2019. Mientras Tia y
-                      Favorita crecen de forma gradual, Tuti avanza a velocidad record y se acerca a los
-                      niveles de facturacion de gigantes ya establecidos.
+                      La línea violeta (Tuti) muestra un crecimiento explosivo desde 2019. Mientras Tía y
+                      Favorita crecen de forma gradual, Tuti avanza a velocidad récord y se acerca a los
+                      niveles de facturación de gigantes ya establecidos.
                     </p>
                   </div>
 
@@ -648,9 +698,9 @@ export default function PaymentsParadoxPage({
                       <EfficiencyBarsChart />
                     </div>
                     <p className="pp-chart-explanation">
-                      Este grafico mide que tan rapido una cadena convierte activos en ventas.{' '}
-                      <strong>Tuti funciona como una maquina de velocidad</strong>: rota su base operativa
-                      mas rapido y recupera liquidez para reponer mercaderia sin esperar al banco.
+                      Este gráfico mide qué tan rápido una cadena convierte activos en ventas.{' '}
+                      <strong>Tuti funciona como una máquina de velocidad</strong>: rota su base operativa
+                      más rápido y recupera liquidez para reponer mercadería sin esperar al banco.
                     </p>
                   </div>
                 </div>
@@ -669,9 +719,9 @@ export default function PaymentsParadoxPage({
                     />
                   </div>
                   <p className="pp-chart-explanation">
-                    Al inicio, la linea de Tuti se ubicaba muy abajo por una estrategia agresiva de
-                    expansion. Lo relevante es su subida progresiva hasta cruzar a positivo en 2024.{' '}
-                    <strong>El modelo dejo de quemar caja y entro en zona de rentabilidad.</strong>
+                    Al inicio, la línea de Tuti se ubicaba muy abajo por una estrategia agresiva de
+                    expansión. Lo relevante es su subida progresiva hasta cruzar a positivo en 2024.{' '}
+                    <strong>El modelo dejó de quemar caja y entró en zona de rentabilidad.</strong>
                   </p>
                 </div>
 
@@ -681,15 +731,15 @@ export default function PaymentsParadoxPage({
                     <StackedAreaShareChart labels={FINANCIAL_YEARS} layers={SHARE_LAYERS} />
                   </div>
                   <p className="pp-chart-explanation">
-                    Si el gasto total en supermercados fuera un solo pastel, el area violeta muestra como
-                    Tuti gana espacio cada anio. Lo que captura Tuti, lo dejan de capturar los
+                    Si el gasto total en supermercados fuera un solo pastel, el área violeta muestra cómo
+                    Tuti gana espacio cada año. Lo que captura Tuti, lo dejan de capturar los
                     supermercados tradicionales.
                   </p>
                 </div>
               </section>
 
               <div className="pp-dashboard-conclusion">
-                <h3>La Paradoja de la Digitalizacion</h3>
+                <h3>La Paradoja de la Digitalización</h3>
                 <section className="pp-final-conclusion">
                   <h4>5. Conclusión: El Límite del Efectivo</h4>
                   <article>
@@ -715,8 +765,8 @@ export default function PaymentsParadoxPage({
                   <article className="pp-conclusion-card">
                     <h4 className="pp-conclusion-danger">1. La Trampa Digital</h4>
                     <p>
-                      Para cadenas como <strong>Tia</strong>, aceptar pagos digitales mejora experiencia,
-                      pero erosiona margen por comisiones y costos tecnologicos.
+                      Para cadenas como <strong>Tía</strong>, aceptar pagos digitales mejora la experiencia,
+                      pero erosiona el margen por comisiones y costos tecnológicos.
                     </p>
                   </article>
                   <article className="pp-conclusion-card">
@@ -730,7 +780,7 @@ export default function PaymentsParadoxPage({
                     <h4 className="pp-conclusion-neutral">3. Mercado Dividido</h4>
                     <p>
                       El mercado se polariza entre consumidores que pagan por comodidad digital y quienes
-                      priorizan el menor precio posible aun con friccion en el medio de pago.
+                      priorizan el menor precio posible, aun con fricción en el medio de pago.
                     </p>
                   </article>
                 </div>
@@ -745,4 +795,3 @@ export default function PaymentsParadoxPage({
     </div>
   )
 }
-

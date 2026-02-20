@@ -27,6 +27,9 @@ function LandingPage({
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+  const heroStyle = {
+    '--hero-bg-url': `url('${import.meta.env.BASE_URL}images/hero-bg.jpg')`,
+  } as React.CSSProperties
 
   return (
     <div className="page">
@@ -39,13 +42,13 @@ function LandingPage({
       />
 
       <main>
-        <section className="hero">
+        <section className="hero" style={heroStyle}>
           <div className="hero-badge">POSICIÓN GLOBAL: #67</div>
 
           <div className="hero-main">
             <div className="hero-number">69.6%</div>
             <div className="hero-text">
-              <h1>Monitoreando la transición hacia una economía digital (2020-2026)</h1>
+              <h1>Monitoreando la transición hacia una economía digital (2020-2024)</h1>
               <p>
                 Analizamos el progreso de la infraestructura, capital humano y adopción tecnológica en el
                 sector productivo del Ecuador.
@@ -55,7 +58,6 @@ function LandingPage({
                 <button className="btn-primary" onClick={onOpenDashboard}>
                   Ver Dashboard
                 </button>
-                <button className="btn-secondary">Leer Metodologí­a</button>
               </div>
             </div>
           </div>
@@ -229,6 +231,12 @@ function DashboardPage({
     return 40
   }
 
+  const getInteroperabilityLabel = (level: string) => {
+    if (level === 'High') return 'Alta'
+    if (level === 'Medium') return 'Media'
+    return 'Baja'
+  }
+
   const getPayCompositeScore = () => {
     const penetration = parsePercent(activeData.pay.value)
     const qr = parsePercent(activeData.pay.qrAdoption)
@@ -256,10 +264,10 @@ function DashboardPage({
       ],
       methodology: [
         'Cada componente se expresa en porcentaje y se normaliza en la misma escala.',
-        'El indice GOV se calcula con promedio aritmetico simple de OSI, TII y HCI.',
-        `Para el anio ${selectedYear} el resultado del dashboard es ${getGovScore()}.`,
+        'El índice GOV se calcula con promedio aritmético simple de OSI, TII y HCI.',
+        `Para el año ${selectedYear}, el resultado del dashboard es ${getGovScore()}.`,
       ],
-      sources: ['UN DESA - E-Government Survey (EGDI)', 'MINTEL - Estadisticas de gobierno digital', 'INEC - Datos de capital humano'],
+      sources: ['UN DESA - E-Government Survey (EGDI)', 'MINTEL - Estadísticas de gobierno digital', 'INEC - Datos de capital humano'],
     },
     acc: {
       title: 'ACC - Connectivity and Infrastructure Access',
@@ -267,13 +275,13 @@ function DashboardPage({
       inputs: [
         { label: 'IH - Hogares con acceso a internet', value: activeData.acc.ih },
         { label: 'UI - Personas que utilizan internet', value: activeData.acc.ui },
-        { label: 'SP - Telefono inteligente', value: activeData.acc.sp },
+        { label: 'SP - Teléfono inteligente', value: activeData.acc.sp },
         { label: 'AI - Analfabetismo digital', value: activeData.acc.ai },
       ],
       methodology: [
         'Se toman cuatro porcentajes de acceso y uso digital para el mismo periodo.',
         'Todos los indicadores pesan igual y se agregan mediante promedio simple.',
-        `Para el anio ${selectedYear}, el ACC calculado es ${getAccScore()}.`,
+        `Para el año ${selectedYear}, el ACC calculado es ${getAccScore()}.`,
       ],
       sources: ['INEC - TIC en hogares y personas', 'ARCOTEL/MINTEL - Cobertura y acceso', 'Encuestas nacionales de habilidades digitales'],
     },
@@ -282,27 +290,27 @@ function DashboardPage({
       formula: '%Delta ECO = ((V_t - V_{t-1}) / V_{t-1}) x 100',
       inputs: [
         { label: 'Volumen transaccional digital (V_t)', value: activeData.eco.value },
-        { label: 'Variacion reportada del periodo', value: activeData.eco.trend.value },
+        { label: 'Variación reportada del periodo', value: activeData.eco.trend.value },
       ],
       methodology: [
         'El indicador principal representa el volumen agregado de transacciones digitales del periodo.',
-        'La tendencia muestra la variacion porcentual frente al periodo anterior.',
+        'La tendencia muestra la variación porcentual frente al periodo anterior.',
         'El tablero publica valor principal, tendencia y su lectura operativa.',
       ],
-      sources: ['Banco Central del Ecuador - Estadisticas monetarias', 'Superintendencia de Bancos - Reportes del sistema financiero'],
+      sources: ['Banco Central del Ecuador - Estadísticas monetarias', 'Superintendencia de Bancos - Reportes del sistema financiero'],
     },
     pay: {
       title: 'PAY - Digital Payments',
-      formula: `PAY* = 0.50*Penetracion + 0.30*AdopcionQR + 0.20*Interoperabilidad = ${formatPercent(getPayCompositeScore())}`,
+      formula: `PAY* = 0.50*Penetración + 0.30*AdopciónQR + 0.20*Interoperabilidad = ${formatPercent(getPayCompositeScore())}`,
       inputs: [
-        { label: 'Penetracion de pagos digitales', value: activeData.pay.value },
-        { label: 'Adopcion de QR', value: activeData.pay.qrAdoption },
-        { label: 'Interoperabilidad (escala cualitativa)', value: activeData.pay.interoperability },
+        { label: 'Penetración de pagos digitales', value: activeData.pay.value },
+        { label: 'Adopción de QR', value: activeData.pay.qrAdoption },
+        { label: 'Interoperabilidad (escala cualitativa)', value: getInteroperabilityLabel(activeData.pay.interoperability) },
       ],
       methodology: [
-        'Se combina la penetracion total de pagos digitales con adopcion de QR.',
-        'La interoperabilidad se transforma a puntaje (Low=40, Medium=65, High=85).',
-        `La formula ponderada genera una referencia comparativa para el anio ${selectedYear}.`,
+        'Se combina la penetración total de pagos digitales con adopción de QR.',
+        'La interoperabilidad se transforma a puntaje (Baja=40, Media=65, Alta=85).',
+        `La fórmula ponderada genera una referencia comparativa para el año ${selectedYear}.`,
       ],
       sources: ['Banco Central del Ecuador - Medios de pago', 'Asobanca / Superintendencia de Bancos', 'Reportes del ecosistema fintech'],
     },
@@ -339,10 +347,10 @@ function DashboardPage({
       <main className="dashboard-main">
         <section className="dashboard-hero">
           <div>
-            <h1 id="dashboard-title">IDE-EC Interactive Dashboard</h1>
+            <h1 id="dashboard-title">IDE-EC Dashboard Interactivo</h1>
             <p>
-              Real-time monitoring of Ecuador&apos;s digital economy transition across Government, Access,
-              Economy, and Payments sectors.
+              Monitoreo en tiempo real de la transición de la economía digital del Ecuador en los ejes
+              de gobierno, acceso, economía y pagos.
             </p>
           </div>
         </section>
@@ -357,7 +365,7 @@ function DashboardPage({
               onKeyDown={(event) => handleMetricCardKeyDown(event, 'gov')}
             >
               <header>
-                <span className="card-label">GOV. DIGITAL GOVERNMENT</span>
+                <span className="card-label">GOV. GOBIERNO DIGITAL</span>
                 <span className="card-pill">{activeData.gov.pill}</span>
               </header>
               <div className="metric-main gov-main">
@@ -398,7 +406,7 @@ function DashboardPage({
               onKeyDown={(event) => handleMetricCardKeyDown(event, 'acc')}
             >
               <header>
-                <span className="card-label">ACC. CONNECTIVITY &amp; INFRASTRUCTURE</span>
+                <span className="card-label">ACC. CONECTIVIDAD E INFRAESTRUCTURA</span>
                 <span className="card-pill">{activeData.acc.pill}</span>
               </header>
               <div className="metric-main access-main">
@@ -424,7 +432,7 @@ function DashboardPage({
                   },
                   {
                     key: 'SP',
-                    label: 'Telefono inteligente',
+                    label: 'Teléfono inteligente',
                     value: activeData.acc.sp,
                     className: 'acc-bar-sp',
                   },
@@ -457,7 +465,7 @@ function DashboardPage({
               onKeyDown={(event) => handleMetricCardKeyDown(event, 'eco')}
             >
               <header>
-                <span className="card-label">ECO. DIGITAL ECONOMY</span>
+                <span className="card-label">ECO. ECONOMÍA DIGITAL</span>
               </header>
               <div className="metric-main eco-main">
                 <div>
@@ -484,7 +492,7 @@ function DashboardPage({
               onKeyDown={(event) => handleMetricCardKeyDown(event, 'pay')}
             >
               <header>
-                <span className="card-label">PAY. DIGITAL PAYMENTS</span>
+                <span className="card-label">PAY. PAGOS DIGITALES</span>
                 <span className="card-pill">PAY</span>
               </header>
               <div className="metric-main">
@@ -498,12 +506,12 @@ function DashboardPage({
               </div>
               <div className="pay-details">
                 <div>
-                  <span>QR adoption</span>
+                  <span>Adopción QR</span>
                   <strong>{activeData.pay.qrAdoption}</strong>
                 </div>
                 <div>
-                  <span>Interoperability</span>
-                  <strong>{activeData.pay.interoperability}</strong>
+                  <span>Interoperabilidad</span>
+                  <strong>{getInteroperabilityLabel(activeData.pay.interoperability)}</strong>
                 </div>
               </div>
             </div>
@@ -513,10 +521,10 @@ function DashboardPage({
         <section className="projection-section">
           <div className="projection-header">
             <div>
-              <h2>Proyeccion 2018-2026 Simulation</h2>
-              <p>Adjust the timeline to forecast digitalization growth targets.</p>
+              <h2>Simulación de proyección 2018-2026</h2>
+              <p>Ajusta la línea de tiempo para visualizar metas de crecimiento digital.</p>
             </div>
-            <div className="scenario-pill">YEAR: {selectedYear}</div>
+            <div className="scenario-pill">AÑO: {selectedYear}</div>
           </div>
           <div className="projection-slider">
             <div className="slider-labels">
@@ -543,7 +551,7 @@ function DashboardPage({
                     event.stopPropagation()
                     setSelectedYear(year)
                   }}
-                  aria-label={`Select year ${year}`}
+                  aria-label={`Seleccionar año ${year}`}
                 />
               ))}
               <div
@@ -551,7 +559,7 @@ function DashboardPage({
                 style={{ left: `${progressPct}%` }}
                 role="slider"
                 tabIndex={0}
-                aria-label="Timeline year slider"
+                aria-label="Control deslizante de año"
                 aria-valuemin={2018}
                 aria-valuemax={2026}
                 aria-valuenow={selectedYear}
@@ -572,18 +580,19 @@ function DashboardPage({
               <div className="story-tag danger">Caso 1</div>
               <h3>La Paradoja de los Pagos en Ecuador</h3>
               <p>
-              CÃ³mo el gigante del descuento frena la adopciÃ³n digital mientras las Fintech revolucionan la inclusiÃ³n financiera en el sector informal.
+                Cómo el gigante del descuento frena la adopción digital mientras las Fintech revolucionan
+                la inclusión financiera en el sector informal.
               </p>
               <button className="story-button" onClick={onOpenPaymentsParadox}>
-                Ver Analisis Completo -&gt;
+                Ver análisis completo -&gt;
               </button>
             </article>
             <article id="case-study-2" className="story-card right-story">
               <div className="story-tag success">Caso 2</div>
-              <h3>Digitalizacion Transporte Publico</h3>
+              <h3>Digitalización del Transporte Público</h3>
               <p>
-                Fintech solutions like Deuna are bridging the gap. Zero-fee P2P transfers and unified QR
-                standards are driving a 40% YoY adoption rate in micro-businesses.
+                Soluciones Fintech como Deuna están cerrando brechas. Las transferencias P2P sin costo y
+                los estándares QR unificados impulsan una adopción anual del 40% en micronegocios.
               </p>
               <button className="story-button">Ver Caso de Estudio</button>
             </article>
@@ -603,7 +612,7 @@ function DashboardPage({
           >
             <header className="metric-modal-header">
               <div>
-                <p className="metric-modal-kicker">MetodologÃ­a y Formula</p>
+                <p className="metric-modal-kicker">Metodología y fórmula</p>
                 <h3 className="metric-modal-title">{activeMethodology.title}</h3>
               </div>
               <button type="button" className="metric-modal-close" onClick={closeMetricModal}>
@@ -613,7 +622,7 @@ function DashboardPage({
 
             <div className="metric-modal-content">
               <section className="metric-modal-block">
-                <h4>Formula de calculo</h4>
+                <h4>Fórmula de cálculo</h4>
                 <code className="metric-formula">{activeMethodology.formula}</code>
               </section>
 
@@ -630,7 +639,7 @@ function DashboardPage({
               </section>
 
               <section className="metric-modal-block">
-                <h4>Metodologia</h4>
+                <h4>Metodología</h4>
                 <ul>
                   {activeMethodology.methodology.map((step) => (
                     <li key={step}>{step}</li>
@@ -707,4 +716,3 @@ function App() {
 }
 
 export default App
-

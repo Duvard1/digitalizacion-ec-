@@ -57,8 +57,9 @@ export default function HistoricalTimeline() {
 
   useEffect(() => {
     const loadData = async () => {
+      const csvUrl = `${import.meta.env.BASE_URL}data/linea_tiempo.csv`
       try {
-        const response = await fetch('/data/linea_tiempo.csv')
+        const response = await fetch(csvUrl)
         if (!response.ok) {
           throw new Error(`No se pudo cargar CSV (${response.status})`)
         }
@@ -67,7 +68,7 @@ export default function HistoricalTimeline() {
         setEvents(parseTimelineCsv(csvText))
         setError(null)
       } catch (loadError) {
-        console.error('Error al cargar linea_tiempo.csv', loadError)
+        console.error(`Error al cargar ${csvUrl}`, loadError)
         setError('Error al cargar el archivo linea_tiempo.csv')
       } finally {
         setLoading(false)
@@ -106,7 +107,7 @@ export default function HistoricalTimeline() {
 
   const legend = useMemo(
     () => [
-      { key: 'tecnologia', label: 'Tecnologia', className: 'dot-tech' },
+      { key: 'tecnologia', label: 'Tecnología', className: 'dot-tech' },
       { key: 'legal', label: 'Legal', className: 'dot-legal' },
       { key: 'fintech', label: 'Fintech', className: 'dot-fintech' },
     ],
@@ -118,8 +119,8 @@ export default function HistoricalTimeline() {
       <div className="timeline-v2-container">
         <div className="timeline-v2-header">
           <div>
-            <h2>Hitos de la Digitalizacion</h2>
-            <p>Evolucion historica</p>
+            <h2>Hitos de la Digitalización</h2>
+            <p>Evolución histórica</p>
           </div>
           <div className="timeline-v2-legend">
             {legend.map((item) => (
@@ -140,7 +141,7 @@ export default function HistoricalTimeline() {
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
         >
-          {loading && <div className="timeline-v2-message">Cargando datos historicos...</div>}
+          {loading && <div className="timeline-v2-message">Cargando datos históricos...</div>}
           {!loading && error && <div className="timeline-v2-message error">{error}</div>}
           {!loading &&
             !error &&
@@ -156,7 +157,7 @@ export default function HistoricalTimeline() {
                     <h3>{event.titulo}</h3>
                     <p>{event.descripcion}</p>
                     <span className={`timeline-v2-chip ${categoryKey}`}>
-                      {event.categoria || 'Tecnologia'}
+                      {event.categoria || 'Tecnología'}
                     </span>
                   </div>
                 </article>
