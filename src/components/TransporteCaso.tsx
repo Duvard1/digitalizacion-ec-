@@ -114,7 +114,7 @@ export function TransporteCaso({ onGoHome, onOpenDashboard }: TransporteCasoProp
           <section className="main-story-v2">
             <div className="metro-image-container">
               <img
-                src="/images/Transporte.png"
+                src="images/Transporte.png"
                 alt="Digitalización Transporte Quito"
                 className="metro-image"
               />
