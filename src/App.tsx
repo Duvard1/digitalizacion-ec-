@@ -50,7 +50,7 @@ function LandingPage({
           <div className="hero-badge">POSICIÓN GLOBAL: #67</div>
 
           <div className="hero-main">
-            <div className="hero-number">69.6%</div>
+            <div className="hero-number">44.24%</div>
             <div className="hero-text">
               <h1>Monitoreando la transición hacia una economía digital (2020-2024)</h1>
               <p>
