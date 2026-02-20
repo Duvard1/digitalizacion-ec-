@@ -59,9 +59,14 @@ function LandingPage({
               </p>
 
               <div className="hero-actions">
-                <button className="btn-primary" onClick={onOpenDashboard}>
-                  Ver Dashboard
-                </button>
+                <a
+                  className="btn-primary"
+                  href="https://claude.ai/public/artifacts/5b8835de-addb-4944-b64b-b90ce9e67a48"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Indicadores
+                </a>
               </div>
             </div>
           </div>

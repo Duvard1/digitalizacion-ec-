@@ -26,6 +26,7 @@ export default function GlobalNav({
         <a
           className="nav-link-button"
           href="https://claude.ai/public/artifacts/5b8835de-addb-4944-b64b-b90ce9e67a48"
+          target="_blank"
         >
           Indicadores
         </a>
