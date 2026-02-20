@@ -9,7 +9,6 @@ type GlobalNavProps = {
 
 export default function GlobalNav({
   onGoHome,
-  onGoDashboard,
   onGoLotaip,
   onGoCase1,
   onGoCase2,
@@ -24,9 +23,12 @@ export default function GlobalNav({
         <button type="button" className="nav-link-button" onClick={onGoHome}>
           Inicio
         </button>
-        <button type="button" className="nav-link-button" onClick={onGoDashboard}>
+        <a
+          className="nav-link-button"
+          href="https://claude.ai/public/artifacts/5b8835de-addb-4944-b64b-b90ce9e67a48"
+        >
           Indicadores
-        </button>
+        </a>
         <button type="button" className="nav-link-button" onClick={onGoLotaip}>
           LOTAIP
         </button>
