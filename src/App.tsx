@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react'
+﻿import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react'
 import './App.css'
 import {
   DASHBOARD_YEARS,
@@ -6,179 +6,48 @@ import {
   type TimelineYear,
   type TrendDirection,
 } from './data/dashboardMetrics'
+import PaymentsParadoxPage from './components/PaymentsParadoxPage'
+import GlobalNav from './components/GlobalNav'
+import GlobalFooter from './components/GlobalFooter'
+import HistoricalTimeline from './components/HistoricalTimeline'
 
-type View = 'landing' | 'dashboard'
+type View = 'landing' | 'dashboard' | 'payments-paradox'
 type MetricKey = 'gov' | 'acc' | 'eco' | 'pay'
+type DashboardScrollTarget = 'dashboard' | 'case2'
 
-function LandingPage({ onOpenDashboard }: { onOpenDashboard: () => void }) {
-  const [selectedLaw, setSelectedLaw] = useState<
-    | {
-        year: string
-        title: string
-        entity: string
-        summary: string
-        focus: string
-      }
-    | null
-  >(null)
-
-  const laws = [
-    {
-      year: '2002',
-      shortTitle: 'Comercio Electronico',
-      title: 'Ley de Comercio Electronico, Firmas Electronicas y Mensajes de Datos',
-      entity: 'Congreso Nacional del Ecuador',
-      summary:
-        'Aprobada en el Registro Oficial Suplemento 557 (17-abr-2002), establece el marco juridico del comercio digital en Ecuador.',
-      focus:
-        'Introduce el principio de equivalencia funcional: la firma electronica y los mensajes de datos tienen validez legal y probatoria similar a sus equivalentes fisicos.',
-    },
-    {
-      year: '2004',
-      shortTitle: 'Ley de Transparencia',
-      title: 'Ley Organica de Transparencia y Acceso a la Informacion Publica (LOTAIP)',
-      entity: 'Congreso Nacional / Asamblea Nacional',
-      summary:
-        'Promulga obligaciones de transparencia activa y derecho de acceso a la informacion publica. Su marco fue actualizado con la nueva LOTAIP en 2023.',
-      focus:
-        'Publicacion obligatoria de informacion institucional, plazos de respuesta a solicitudes ciudadanas y control sobre reserva de informacion.',
-    },
-    {
-      year: '2008',
-      shortTitle: 'Operatividad e-Firma',
-      title: 'Puesta en operacion de la firma electronica en Ecuador',
-      entity: 'BCE, MINTEL y SRI',
-      summary:
-        'El Banco Central del Ecuador se consolida como primera entidad de certificacion y la institucionalidad digital se fortalece con la creacion del MINTEL (ago-2009).',
-      focus:
-        'La Ley de 2002 pasa de marco legal a aplicacion practica; en materia tributaria, el SRI inicia la ruta hacia comprobantes electronicos, que luego se formaliza en cronogramas obligatorios desde 2013-2014.',
-    },
-    {
-      year: '2016',
-      shortTitle: 'Codigo Ingenios',
-      title: 'Codigo Organico de la Economia Social de los Conocimientos (Codigo Ingenios)',
-      entity: 'Asamblea Nacional del Ecuador',
-      summary:
-        'Emitido en el Registro Oficial Suplemento 899 (09-dic-2016), reorganiza el sistema de conocimiento, innovacion y propiedad intelectual.',
-      focus:
-        'Promueve transferencia tecnologica, investigacion, innovacion y politicas de conocimiento abierto, incluyendo lineamientos para uso de tecnologias libres en el sector publico.',
-    },
-    {
-      year: '2021',
-      shortTitle: 'Proteccion de Datos',
-      title: 'Ley Organica de Proteccion de Datos Personales',
-      entity: 'Asamblea Nacional del Ecuador',
-      summary:
-        'Aprobada en 2021 tras filtraciones masivas (como el caso Novaestrat), crea el marco integral de privacidad y tratamiento de datos personales.',
-      focus:
-        "Incorpora derechos como acceso, rectificacion, eliminacion, oposicion, portabilidad y supresion ('derecho al olvido'), junto con obligaciones para responsables y encargados.",
-    },
-    {
-      year: '2022',
-      shortTitle: 'Cliente Financiero',
-      title: 'Ley Organica de Defensa y Proteccion de los Derechos de los Usuarios Financieros',
-      entity: 'Asamblea Nacional del Ecuador',
-      summary:
-        'Publicada en el Registro Oficial Suplemento 1 (11-feb-2022), fortalece la proteccion de usuarios del sistema financiero.',
-      focus:
-        'Obliga a entidades financieras a disponer de canales fisicos y electronicos eficaces para atencion, reclamos y mecanismos de reparacion.',
-    },
-    {
-      year: '2022',
-      shortTitle: 'Ley Fintech',
-      title:
-        'Ley Organica para el Desarrollo, Regulacion y Control de los Servicios Financieros Tecnologicos',
-      entity: 'Asamblea Nacional del Ecuador',
-      summary:
-        'Publicada en el Segundo Suplemento del Registro Oficial 215 (22-dic-2022), establece el marco legal para servicios financieros tecnologicos.',
-      focus:
-        'Regula actores y servicios fintech, gobernanza operativa y mecanismos para innovacion financiera con control prudencial y proteccion a usuarios.',
-    },
-    {
-      year: '2023',
-      shortTitle: 'Transformacion Digital',
-      title: 'Ley Organica de Transformacion Digital y Audiovisual',
-      entity: 'Gobierno del Ecuador',
-      summary:
-        'Publicada en el Tercer Suplemento del Registro Oficial 245 (07-feb-2023), crea incentivos para inversion tecnologica y audiovisual.',
-      focus:
-        'Facilita tramites digitales y la constitucion de empresas 100% en linea, ademas de promover ecosistemas de innovacion y economia digital.',
-    },
-    {
-      year: '2024',
-      shortTitle: 'Norma de Pagos',
-      title: 'Norma de Medios y Sistemas de Pago',
-      entity: 'Junta de Politica y Regulacion Monetaria',
-      summary:
-        'La Resolucion JPRM-2024-018-M (RO Suplemento 645, 17-sep-2024) aterriza reglas operativas para medios y sistemas de pago.',
-      focus:
-        'Define criterios tecnicos y de gestion de riesgo para actores del ecosistema de pagos, reforzando interoperabilidad y seguridad.',
-    },
-    {
-      year: '2025',
-      shortTitle: 'Agenda 2025-2030',
-      title: 'Politica Publica de Transformacion Digital 2025-2030',
-      entity: 'MINTEL',
-      summary:
-        'Publicada mediante Acuerdo MINTEL-MINTEL-2025-0005 (RO Suplemento 15, 08-abr-2025), marca la hoja de ruta digital del Estado.',
-      focus:
-        'Prioriza reduccion de brecha digital, modernizacion del sector publico, gobernanza de datos y desarrollo de cultura y habilidades digitales.',
-    },
-  ]
-
-  const [startIndex, setStartIndex] = useState(0)
-
-  const openLawModal = (law: {
-    year: string
-    title: string
-    entity: string
-    summary: string
-    focus: string
-  }) => {
-    setSelectedLaw(law)
+function LandingPage({
+  onOpenDashboard,
+  onOpenCase1,
+  onOpenCase2,
+}: {
+  onOpenDashboard: () => void
+  onOpenCase1: () => void
+  onOpenCase2: () => void
+}) {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
-
-  const closeLawModal = () => {
-    setSelectedLaw(null)
-  }
-
-  const showPrevious = () => {
-    setStartIndex((prev) => (prev - 1 + laws.length) % laws.length)
-  }
-
-  const showNext = () => {
-    setStartIndex((prev) => (prev + 1) % laws.length)
-  }
-
-  const visibleLaws = Array.from({ length: 5 }).map((_, idx) => {
-    const index = (startIndex + idx) % laws.length
-    return laws[index]
-  })
 
   return (
     <div className="page">
-      <header className="topbar">
-        <div className="topbar-left">
-          <div className="logo-mark">IDE-EC</div>
-        </div>
-        <nav className="nav-links">
-          <a href="#">Inicio</a>
-          <a href="#">Dashboard</a>
-          <a href="#" >MetodologÃƒÂ­Ã‚Â­a</a>
-          <a href="#">Fuentes</a>
-        </nav>
-      </header>
+      <GlobalNav
+        className="dashboard-topbar"
+        onGoHome={scrollToTop}
+        onGoDashboard={onOpenDashboard}
+        onGoCase1={onOpenCase1}
+        onGoCase2={onOpenCase2}
+      />
 
       <main>
         <section className="hero">
-          <div className="hero-badge">POSICIÃƒâ€œN GLOBAL: #67</div>
+          <div className="hero-badge">POSICIÓN GLOBAL: #67</div>
 
           <div className="hero-main">
             <div className="hero-number">69.6%</div>
             <div className="hero-text">
-              <h1>Monitoreando la transiciÃƒÂ³n hacia una economÃƒÂ­Ã‚Â­a digital (2022-2026)</h1>
+              <h1>Monitoreando la transición hacia una economía digital (2020-2026)</h1>
               <p>
-                Analizamos el progreso de la infraestructura, capital humano y adopciÃƒÂ³n tecnolÃƒÂ³gica en el
+                Analizamos el progreso de la infraestructura, capital humano y adopción tecnológica en el
                 sector productivo del Ecuador.
               </p>
 
@@ -186,96 +55,29 @@ function LandingPage({ onOpenDashboard }: { onOpenDashboard: () => void }) {
                 <button className="btn-primary" onClick={onOpenDashboard}>
                   Ver Dashboard
                 </button>
-                <button className="btn-secondary">Leer MetodologÃƒÂ­Ã‚Â­a</button>
+                <button className="btn-secondary">Leer Metodologí­a</button>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="timeline-section">
-          <div className="timeline-header">
-            <div>
-              <h2>EvoluciÃƒÂ³n Normativa</h2>
-              <p>Hitos clave en la legislaciÃƒÂ³n digital ecuatoriana</p>
-            </div>
-            <div className="timeline-controls">
-              <button type="button" className="control-btn" onClick={showPrevious}>
-                {'<'}
-              </button>
-              <button type="button" className="control-btn" onClick={showNext}>
-                {'>'}
-              </button>
-            </div>
-          </div>
-
-          <div className="timeline">
-            {visibleLaws.map((law) => (
-              <button
-                key={`${law.year}-${law.shortTitle}`}
-                type="button"
-                className="timeline-item as-button"
-                onClick={() =>
-                  openLawModal({
-                    year: law.year,
-                    title: law.title,
-                    entity: law.entity,
-                    summary: law.summary,
-                    focus: law.focus,
-                  })
-                }
-              >
-                <div className="timeline-icon">{law.year}</div>
-                <p className="timeline-title">{law.shortTitle}</p>
-              </button>
-            ))}
-          </div>
-        </section>
-
-
+        <HistoricalTimeline />
       </main>
 
-      <footer className="footer">
-        <div className="footer-left">IDE-EC - Universidad Central del Ecuador</div>
-        <div className="footer-left">LegislaciÃƒÂ³n InformÃƒÂ¡tica</div>
-      </footer>
-
-      {selectedLaw && (
-        <div className="law-modal-overlay" onClick={closeLawModal}>
-          <div
-            className="law-modal"
-            onClick={(event) => {
-              event.stopPropagation()
-            }}
-          >
-            <header className="law-modal-header">
-              <div className="law-modal-chip">{selectedLaw.year}</div>
-              <button type="button" className="law-modal-close" onClick={closeLawModal}>
-                Ã¢Å“â€¢
-              </button>
-            </header>
-            <h3 className="law-modal-title">{selectedLaw.title}</h3>
-            <p className="law-modal-entity">
-              <strong>Ente emisor:</strong> {selectedLaw.entity}
-            </p>
-            <p className="law-modal-summary">{selectedLaw.summary}</p>
-            <div className="law-modal-focus">
-              <h4>Ã‚Â¿QuÃƒÂ© regula?</h4>
-              <p>{selectedLaw.focus}</p>
-            </div>
-            <footer className="law-modal-footer">
-              <button type="button" className="law-modal-secondary" onClick={closeLawModal}>
-                Cerrar
-              </button>
-            </footer>
-          </div>
-        </div>
-      )}
-
+      <GlobalFooter />
     </div>
   )
 }
 
-function DashboardPage({ onBackHome }: { onBackHome: () => void }) {
+function DashboardPage({
+  onGoHome,
+  onOpenPaymentsParadox,
+  initialScrollTarget,
+}: {
+  onGoHome: () => void
+  onOpenPaymentsParadox: () => void
+  initialScrollTarget: DashboardScrollTarget
+}) {
   const [selectedYear, setSelectedYear] = useState<TimelineYear>(2018)
   const [isDragging, setIsDragging] = useState(false)
   const [selectedMetric, setSelectedMetric] = useState<MetricKey | null>(null)
@@ -508,30 +310,36 @@ function DashboardPage({ onBackHome }: { onBackHome: () => void }) {
 
   const activeMethodology = selectedMetric ? metricMethodology[selectedMetric] : null
 
+  const scrollToDashboardTitle = () => {
+    const dashboardTitle = document.getElementById('dashboard-title')
+    dashboardTitle?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  const scrollToCase2 = () => {
+    const case2Card = document.getElementById('case-study-2')
+    case2Card?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  useEffect(() => {
+    const targetId = initialScrollTarget === 'case2' ? 'case-study-2' : 'dashboard-title'
+    const targetElement = document.getElementById(targetId)
+    targetElement?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [initialScrollTarget])
+
   return (
     <div className="page">
-      <header className="topbar dashboard-topbar">
-        <div className="topbar-left">
-          <div className="logo-mark">IDE-EC</div>
-        </div>
-        <nav className="nav-links">
-          <button className="nav-link-button" onClick={onBackHome}>
-            Inicio
-          </button>
-          <a href="#">Dashboard</a>
-          <a href="#">Case Studies</a>
-          <a href="#">Reports</a>
-          <a href="#">Methodology</a>
-        </nav>
-        <div className="topbar-actions">
-          <button className="icon-button">⚙</button>
-        </div>
-      </header>
+      <GlobalNav
+        className="dashboard-topbar"
+        onGoHome={onGoHome}
+        onGoDashboard={scrollToDashboardTitle}
+        onGoCase1={onOpenPaymentsParadox}
+        onGoCase2={scrollToCase2}
+      />
 
       <main className="dashboard-main">
         <section className="dashboard-hero">
           <div>
-            <h1>IDE-EC Interactive Dashboard</h1>
+            <h1 id="dashboard-title">IDE-EC Interactive Dashboard</h1>
             <p>
               Real-time monitoring of Ecuador&apos;s digital economy transition across Government, Access,
               Economy, and Payments sectors.
@@ -758,39 +566,32 @@ function DashboardPage({ onBackHome }: { onBackHome: () => void }) {
         </section>
 
         <section className="stories-section">
-          <h2>La Realidad en la Calle</h2>
+          <h2>Casos de Estudio</h2>
           <div className="stories-grid">
             <article className="story-card left-story">
-              <div className="story-tag danger">El Reto</div>
-              <h3>La Cultura del Efectivo</h3>
+              <div className="story-tag danger">Caso 1</div>
+              <h3>La Paradoja de los Pagos en Ecuador</h3>
               <p>
-                High frequency, low ticket transactions define the &quot;Tuti&quot; phenomenon. 65% of daily
-                purchases remain cash-based due to perceived fees and lack of digital trust.
+              CÃ³mo el gigante del descuento frena la adopciÃ³n digital mientras las Fintech revolucionan la inclusiÃ³n financiera en el sector informal.
               </p>
-              <button className="story-button">Ver Analisis Completo -&gt;</button>
+              <button className="story-button" onClick={onOpenPaymentsParadox}>
+                Ver Analisis Completo -&gt;
+              </button>
             </article>
-            <article className="story-card right-story">
-              <div className="story-tag success">La Solucion</div>
-              <h3>Ecosistema QR Interoperable</h3>
+            <article id="case-study-2" className="story-card right-story">
+              <div className="story-tag success">Caso 2</div>
+              <h3>Digitalizacion Transporte Publico</h3>
               <p>
                 Fintech solutions like Deuna are bridging the gap. Zero-fee P2P transfers and unified QR
                 standards are driving a 40% YoY adoption rate in micro-businesses.
               </p>
-              <button className="story-button">Ver Caso de Estudio -&gt;</button>
+              <button className="story-button">Ver Caso de Estudio</button>
             </article>
           </div>
         </section>
       </main>
 
-      <footer className="footer dashboard-footer">
-        <div className="footer-left">IDE-EC (c) 2024 Indice de Digitalizacion de Ecuador. All rights reserved.</div>
-        <div className="footer-links">
-          <span>Fuentes de Datos</span>
-          <span>Legal</span>
-          <button className="export-button">CSV</button>
-          <button className="export-button primary">Export Excel</button>
-        </div>
-      </footer>
+      <GlobalFooter />
 
       {selectedMetric && activeMethodology && (
         <div className="metric-modal-overlay" onClick={closeMetricModal}>
@@ -802,7 +603,7 @@ function DashboardPage({ onBackHome }: { onBackHome: () => void }) {
           >
             <header className="metric-modal-header">
               <div>
-                <p className="metric-modal-kicker">Metodologia y Formula</p>
+                <p className="metric-modal-kicker">MetodologÃ­a y Formula</p>
                 <h3 className="metric-modal-title">{activeMethodology.title}</h3>
               </div>
               <button type="button" className="metric-modal-close" onClick={closeMetricModal}>
@@ -861,12 +662,49 @@ function DashboardPage({ onBackHome }: { onBackHome: () => void }) {
 
 function App() {
   const [view, setView] = useState<View>('landing')
+  const [dashboardScrollTarget, setDashboardScrollTarget] = useState<DashboardScrollTarget>('dashboard')
 
-  if (view === 'dashboard') {
-    return <DashboardPage onBackHome={() => setView('landing')} />
+  const openDashboard = (target: DashboardScrollTarget = 'dashboard') => {
+    setDashboardScrollTarget(target)
+    setView('dashboard')
   }
 
-  return <LandingPage onOpenDashboard={() => setView('dashboard')} />
+  const openCase1 = () => {
+    setView('payments-paradox')
+  }
+
+  const openCase2 = () => {
+    openDashboard('case2')
+  }
+
+  if (view === 'payments-paradox') {
+    return (
+      <PaymentsParadoxPage
+        onGoHome={() => setView('landing')}
+        onOpenDashboard={() => openDashboard('dashboard')}
+        onOpenCase2={openCase2}
+      />
+    )
+  }
+
+  if (view === 'dashboard') {
+    return (
+      <DashboardPage
+        onGoHome={() => setView('landing')}
+        onOpenPaymentsParadox={openCase1}
+        initialScrollTarget={dashboardScrollTarget}
+      />
+    )
+  }
+
+  return (
+    <LandingPage
+      onOpenDashboard={() => openDashboard('dashboard')}
+      onOpenCase1={openCase1}
+      onOpenCase2={openCase2}
+    />
+  )
 }
 
 export default App
+
