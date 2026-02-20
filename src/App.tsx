@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react'
+import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react'
 import './App.css'
 import {
   DASHBOARD_YEARS,
@@ -10,8 +10,8 @@ import PaymentsParadoxPage from './components/PaymentsParadoxPage'
 import GlobalNav from './components/GlobalNav'
 import GlobalFooter from './components/GlobalFooter'
 import HistoricalTimeline from './components/HistoricalTimeline'
-
-type View = 'landing' | 'dashboard' | 'payments-paradox'
+import { TransporteCaso } from './components/TransporteCaso'
+type View = 'landing' | 'dashboard' | 'payments-paradox' | 'trolebus-case'
 type MetricKey = 'gov' | 'acc' | 'eco' | 'pay'
 type DashboardScrollTarget = 'dashboard' | 'case2'
 
@@ -74,10 +74,12 @@ function LandingPage({
 function DashboardPage({
   onGoHome,
   onOpenPaymentsParadox,
+  onOpenCase2, // <--- 1. Agregar aquí
   initialScrollTarget,
 }: {
   onGoHome: () => void
   onOpenPaymentsParadox: () => void
+  onOpenCase2: () => void // <--- 2. Y aquí el tipo
   initialScrollTarget: DashboardScrollTarget
 }) {
   const [selectedYear, setSelectedYear] = useState<TimelineYear>(2018)
@@ -589,12 +591,14 @@ function DashboardPage({
             </article>
             <article id="case-study-2" className="story-card right-story">
               <div className="story-tag success">Caso 2</div>
-              <h3>Digitalización del Transporte Público</h3>
+              <h3>Digitalizacion Transporte Publico</h3>
               <p>
-                Soluciones Fintech como Deuna están cerrando brechas. Las transferencias P2P sin costo y
-                los estándares QR unificados impulsan una adopción anual del 40% en micronegocios.
+                Fintech solutions like Deuna are bridging the gap. Zero-fee P2P transfers and unified QR
+                standards are driving a 40% YoY adoption rate in micro-businesses.
               </p>
-              <button className="story-button">Ver Caso de Estudio</button>
+              <button className="story-button" onClick={onOpenCase2}>
+                  Ver Caso de Estudio
+                  </button>
             </article>
           </div>
         </section>
@@ -683,8 +687,16 @@ function App() {
   }
 
   const openCase2 = () => {
-    openDashboard('case2')
+    setView('trolebus-case')
   }
+  if (view === 'trolebus-case') {
+  return (
+    <TransporteCaso 
+      onGoHome={() => setView('landing')} 
+      onOpenDashboard={() => openDashboard('dashboard')}
+    />
+  )
+}
 
   if (view === 'payments-paradox') {
     return (
@@ -696,11 +708,12 @@ function App() {
     )
   }
 
-  if (view === 'dashboard') {
+ if (view === 'dashboard') {
     return (
       <DashboardPage
         onGoHome={() => setView('landing')}
         onOpenPaymentsParadox={openCase1}
+        onOpenCase2={openCase2} // <--- AÑADE ESTA LÍNEA
         initialScrollTarget={dashboardScrollTarget}
       />
     )
