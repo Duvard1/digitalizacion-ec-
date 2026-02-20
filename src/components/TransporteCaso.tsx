@@ -129,7 +129,7 @@ export function TransporteCaso({ onGoHome, onOpenDashboard }: TransporteCasoProp
               <div className="check-item-v2">
                 <ShieldCheck size={24} className="icon-neon" />
                 <div>
-                  <strong>Eficiencia Operativa</strong>
+                  <strong>Eficiencia Operativa.</strong>
                   <p>Reducción drástica de costos logísticos en toda la red.</p>
                 </div>
               </div>
