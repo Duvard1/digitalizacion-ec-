@@ -163,7 +163,7 @@
   overflow: hidden;
   background-image:
     linear-gradient(180deg, rgba(2, 4, 10, 0.2) 0%, rgba(0, 0, 0, 0.9) 100%),
-    url('/images/hero-bg.jpg');
+    var(--hero-bg-url, url('/images/hero-bg.jpg'));
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1048,7 +1048,7 @@
 }
 
 .timeline-modal-event-details li::before {
-  content: 'â€¢';
+  content: '\2022';
   position: absolute;
   left: 0;
   color: #5f82ff;
